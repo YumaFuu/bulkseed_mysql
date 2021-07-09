@@ -21,6 +21,17 @@ Be Carefull!!
 ```ruby
 require "bulkseed_mysql"
 
+# Setup
+BulkseedMysql.init(
+  db_host: "host",
+  db_user: "user",
+  db_password: "password",
+  db_name: "database",
+)
+```
+
+```ruby
+
 now = Time.now.to_s.split(" ").take(2).join(" ")
 # => "2021-07-09 22:14:59"
 
