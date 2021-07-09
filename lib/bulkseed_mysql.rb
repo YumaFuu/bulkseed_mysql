@@ -70,8 +70,7 @@ class BulkseedMysql
     seed.call
   end
 
-  attr_reader :seeds
-  attr_accessor :conn
+  attr_writer :conn
 
   def initialize(conn = nil)
     @conn = conn || Mysql2::Client.new(
