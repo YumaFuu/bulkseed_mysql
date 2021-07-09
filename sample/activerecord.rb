@@ -62,7 +62,8 @@ end
 seed = BulkseedMysql.new
 seed.conn = ActiveRecord::Base.connection
 
-now = Time.now.to_s :db
+now = Time.now.to_s
+binding.pry
 seed.prepare do |s|
   s.table = User.table_name
   s.columns = User.column_names
