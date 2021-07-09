@@ -1,0 +1,27 @@
+PATH
+  remote: .
+  specs:
+    bulkseed_mysql (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    power_assert (2.0.0)
+    rake (13.0.6)
+    terminal-table (3.0.1)
+      unicode-display_width (>= 1.1.1, < 3)
+    test-unit (3.4.4)
+      power_assert
+    unicode-display_width (2.0.0)
+
+PLATFORMS
+  arm64-darwin-20
+
+DEPENDENCIES
+  bulkseed_mysql!
+  rake (~> 13.0)
+  terminal-table
+  test-unit (~> 3.0)
+
+BUNDLED WITH
+   2.2.3

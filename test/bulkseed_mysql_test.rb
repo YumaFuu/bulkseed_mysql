@@ -12,4 +12,12 @@ class BulkseedMysqlTest < Test::Unit::TestCase
   test "something useful" do
     assert_equal("expected", "actual")
   end
+
+  def test_ok
+    BulkseedMysql.call(
+      {
+        id: 1,
+      }
+    )
+  end
 end
