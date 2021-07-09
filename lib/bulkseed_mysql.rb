@@ -74,8 +74,7 @@ class BulkseedMysql
   attr_accessor :conn
 
   def initialize(conn = nil)
-    @conn = conn
-    @conn ||= Mysql2::Client.new(
+    @conn = conn || Mysql2::Client.new(
       host: @@db_config[:host],
       username: @@db_config[:user],
       password: @@db_config[:password],
