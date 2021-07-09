@@ -3,7 +3,7 @@ require "json"
 
 class BulkseedMysql
   class Seed
-    attr_reader :table, :values
+    attr_accessor :table, :columns ,:values
 
     def initialize(table)
       @table = table
@@ -29,14 +29,6 @@ class BulkseedMysql
           @values << item.values
         end
       end
-    end
-
-    def columns= columns
-      @columns = columns
-    end
-
-    def table= table
-      @table = table
     end
 
     def to_cmd
