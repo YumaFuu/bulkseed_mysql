@@ -20,9 +20,9 @@ Be Carefull!!
 
 ```ruby
 require "bulkseed_mysql"
+
 now = Time.now.to_s.split(" ").take(2).join(" ")
 # => "2021-07-09 22:14:59"
-
 
 seed = BulkseedMysql.new
 
@@ -72,4 +72,5 @@ seed = BulkseedMysql.call "users" do |s|
     ...
   ]
 end
+
 ```
