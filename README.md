@@ -1,39 +1,75 @@
 # BulkseedMysql
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/bulkseed_mysql`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
-
-Add this line to your application's Gemfile:
 
 ```ruby
 gem 'bulkseed_mysql'
 ```
 
-And then execute:
+Or
 
-    $ bundle install
-
-Or install it yourself as:
-
-    $ gem install bulkseed_mysql
+```bash
+$ gem install bulkseed_mysql
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Use REPLACE Statement. [see](https://dev.mysql.com/doc/refman/5.6/en/replace.html)<br>
+If call without primary key, mysql will do DELETE and INSERT<br>
+Be Carefull!!
 
-## Development
+```ruby
+require "bulkseed_mysql"
+now = Time.now.to_s.split(" ").take(2).join(" ")
+# => "2021-07-09 22:14:59"
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test-unit` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+seed = BulkseedMysql.new
 
-## Contributing
+seed.prepare "users" do |s|
+  s.columns = [:id, :name, :sex, :created_at, :updated_at]
+  s.data = [
+    [1, "hoge", 23, :male, now, now],
+    [2, "fuga", 25, :female, now, now],
+    [3, "piyo", 18, :other, now, now],
+  ]
+end
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/bulkseed_mysql. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/bulkseed_mysql/blob/master/CODE_OF_CONDUCT.md).
+seed.prepare do |s|
+  # you can also specify here
+  s.table = "admins"
 
-## Code of Conduct
+  # you can also set Array of Hash to data
+  # keys are to be columns
+  s.data = [
+    {
+      id: 1,
+      name: "foo",
+      email: "admin1@sample.com",
+      created_at: now,
+      updated_at: now,
+    },
+    {
+      id: 2,
+      name: "bar",
+      email: "admin2@sample.com",
+      created_at: now,
+      updated_at: now,
+    },
+  ]
+end
 
-Everyone interacting in the BulkseedMysql project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/bulkseed_mysql/blob/master/CODE_OF_CONDUCT.md).
+# insert all prepared tables
+seed.call
+```
+
+```ruby
+require "bulkseed_mysql"
+
+# You can call without prepare
+seed = BulkseedMysql.call "users" do |s|
+  s.data = [
+    ...
+  ]
+end
+```

@@ -89,7 +89,7 @@ class BulkseedMysql
       host: ENV["DB_HOST"],
       username: ENV["DB_USER"],
       password: ENV["DB_PASSWORD"],
-      database: "bulkseed_mysql_sample"
+      database: ENV["DB_NAME"],
     )
 
     @seeds = []
