@@ -17,7 +17,6 @@ ActiveRecord::Base.establish_connection(
 )
 
 con = ActiveRecord::Base.connection
-con.execute "DROP DATABASE IF EXISTS #{db}"
 con.execute "CREATE DATABASE IF NOT EXISTS #{db}"
 
 ActiveRecord::Base.establish_connection(
@@ -62,8 +61,7 @@ end
 seed = BulkseedMysql.new
 seed.conn = ActiveRecord::Base.connection
 
-now = Time.now.to_s
-binding.pry
+now = Time.now.to_s :db
 seed.prepare do |s|
   s.table = User.table_name
   s.columns = User.column_names
