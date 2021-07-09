@@ -8,7 +8,6 @@ end
 
 require "active_record"
 
-db = "bulkseed_mysql_sample"
 ActiveRecord::Base.establish_connection(
   adapter:  "mysql2",
   host:     ENV["DB_HOST"],
@@ -16,7 +15,9 @@ ActiveRecord::Base.establish_connection(
   password: ENV["DB_PASSWORD"],
 )
 
+db = "bulkseed_mysql_sample"
 con = ActiveRecord::Base.connection
+con.execute "DROP DATABASE IF EXISTS #{db}"
 con.execute "CREATE DATABASE IF NOT EXISTS #{db}"
 
 ActiveRecord::Base.establish_connection(
@@ -57,6 +58,13 @@ end
 
 # -----------------------------------
 # Use prepare
+
+BulkseedMysql.init(
+  db_host: ENV.fetch("DB_HOST", "localhost"),
+  db_user: ENV.fetch("DB_USER", "root"),
+  db_password: ENV.fetch("DB_PASSWORD", "password"),
+  db_name: ENV.fetch("DB_NAME", db),
+)
 
 seed = BulkseedMysql.new
 seed.conn = ActiveRecord::Base.connection
