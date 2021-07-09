@@ -4,21 +4,7 @@ require 'terminal-table'
 
 class BulkseedMysql
   class Seed
-    def inspect
-      pretty_table = Terminal::Table.new do |t|
-        t << @columns
-        t.add_separator
-
-        @values.each do |v|
-          t << v
-        end
-      end
-
-      <<~TXT
-        ======= #{@table} =========
-        #{ pretty_table }
-      TXT
-    end
+    attr_reader :table, :values
 
     def initialize(table)
       @table = table
@@ -73,6 +59,20 @@ class BulkseedMysql
     end
   end
 
+  def self.init(
+    db_host:,
+    db_user:,
+    db_password:,
+    db_name:
+  )
+    @@db_config = {
+      host: db_host,
+      user: db_user,
+      password: db_password,
+      database: db_name,
+    }
+  end
+
   def self.call(name = nil, conn = nil, &block)
     seed = new conn
     seed.prepare name, &block
@@ -85,10 +85,10 @@ class BulkseedMysql
   def initialize(conn = nil)
     @conn = conn
     @conn ||= Mysql2::Client.new(
-      host: ENV["DB_HOST"],
-      username: ENV["DB_USER"],
-      password: ENV["DB_PASSWORD"],
-      database: ENV["DB_NAME"],
+      host: @@db_config[:host],
+      username: @@db_config[:user],
+      password: @@db_config[:password],
+      database: @@db_config[:database],
     )
 
     @seeds = []
@@ -103,7 +103,9 @@ class BulkseedMysql
 
   def call
     @seeds.each do |s|
-      puts s.inspect
+      puts " -- #{s.table}  :  created "\
+        "#{ s.values.count } rows"
+
       @conn.query s.to_cmd
     end
   end
