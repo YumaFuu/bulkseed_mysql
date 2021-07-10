@@ -7,26 +7,31 @@ gemfile do
   gem "faker"
 end
 
+# ------- CREATE AND MIGRATE DATABASE  -----------
 require "active_record"
 
+db_host = ENV.fetch("DB_HOST", "localhost")
+db_user = ENV.fetch("DB_USER", "root")
+db_password = ENV.fetch("DB_PASSWORD", "password")
+db_name = "bulkseed_mysql_sample_activerecord"
+
 ActiveRecord::Base.establish_connection(
   adapter:  "mysql2",
-  host:     ENV["DB_HOST"],
-  username: ENV["DB_USER"],
-  password: ENV["DB_PASSWORD"],
+  host: db_host,
+  username: db_user,
+  password: db_password,
 )
 
-db = "bulkseed_mysql_sample_activerecord"
 con = ActiveRecord::Base.connection
-con.execute "DROP DATABASE IF EXISTS #{db}"
-con.execute "CREATE DATABASE IF NOT EXISTS #{db}"
+con.execute "DROP DATABASE IF EXISTS #{db_name}"
+con.execute "CREATE DATABASE IF NOT EXISTS #{db_name}"
 
 ActiveRecord::Base.establish_connection(
   adapter:  "mysql2",
-  host:     ENV["DB_HOST"],
-  username: ENV["DB_USER"],
-  password: ENV["DB_PASSWORD"],
-  database: db,
+  host: db_host,
+  username: db_user,
+  password: db_password,
+  database: db_name,
 )
 
 class CreateSample < ActiveRecord::Migration[4.2]
@@ -63,10 +68,7 @@ end
 # Use prepare
 
 BulkseedMysql.init(
-  db_host: ENV.fetch("DB_HOST", "localhost"),
-  db_user: ENV.fetch("DB_USER", "root"),
-  db_password: ENV.fetch("DB_PASSWORD", "password"),
-  db_name: ENV.fetch("DB_NAME", db),
+  db_connection: ActiveRecord::Base.connection,
 )
 
 seed = BulkseedMysql.new

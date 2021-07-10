@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require_relative "./bulkseed_mysql/version"
 require "json"
 
 class BulkseedMysql
@@ -32,6 +33,10 @@ class BulkseedMysql
     end
 
     def to_cmd
+      if @columns.nil?
+        raise "You have to specify columns"
+      end
+
       values = @values.map do |rows|
         vals = rows.map do |v|
           # escape quotes
@@ -51,17 +56,18 @@ class BulkseedMysql
   end
 
   def self.init(
-    db_host:,
-    db_user:,
-    db_password:,
-    db_name:
-  )
-    @@db_config = {
+    db_host: nil,
+    db_user: nil,
+    db_password: nil,
+    db_name: nil,
+    db_connection: Mysql2::Client.new(
       host: db_host,
-      user: db_user,
+      username: db_user,
       password: db_password,
       database: db_name,
-    }
+    )
+  )
+    @@db_connection = db_connection
   end
 
   def self.call(name = nil, conn = nil, &block)
@@ -70,16 +76,8 @@ class BulkseedMysql
     seed.call
   end
 
-  attr_writer :conn
-
   def initialize(conn = nil)
-    @conn = conn || Mysql2::Client.new(
-      host: @@db_config[:host],
-      username: @@db_config[:user],
-      password: @@db_config[:password],
-      database: @@db_config[:database],
-    )
-
+    @conn = @@db_connection
     @seeds = []
   end
 

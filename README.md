@@ -3,12 +3,14 @@
 ## Installation
 
 ```ruby
-gem 'bulkseed_mysql'
+gem "mysql2"
+gem "bulkseed_mysql"
 ```
 
 Or
 
 ```bash
+# gem install mysql2
 $ gem install bulkseed_mysql
 ```
 
@@ -28,6 +30,12 @@ BulkseedMysql.init(
   db_user: "user",
   db_password: "password",
   db_name: "database",
+)
+
+or
+
+BulkseedMysql.init(
+  db_connection: SomeDatabaseConnection.new,
 )
 ```
 
