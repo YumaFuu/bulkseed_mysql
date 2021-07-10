@@ -16,6 +16,7 @@ $ gem install bulkseed_mysql
 
 Use REPLACE Statement. [see](https://dev.mysql.com/doc/refman/5.6/en/replace.html)<br>
 If call without primary key, mysql will do DELETE and INSERT<br>
+<br>
 Be Carefull!!
 
 ```ruby
@@ -78,10 +79,14 @@ seed.call
 require "bulkseed_mysql"
 
 # You can call without prepare
-seed = BulkseedMysql.call "users" do |s|
+BulkseedMysql.call "users" do |s|
   s.data = [
     ...
   ]
 end
 
 ```
+
+## Samples
+
+[with active_record](./sample/activerecord.rb)

@@ -92,10 +92,10 @@ class BulkseedMysql
 
   def call
     @seeds.each do |s|
+      @conn.query s.to_cmd
+
       puts " -- #{s.table}  :  created "\
         "#{ s.values.count } rows"
-
-      @conn.query s.to_cmd
     end
   end
 end
