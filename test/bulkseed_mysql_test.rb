@@ -12,13 +12,13 @@ class BulkseedMysqlTest < Test::Unit::TestCase
   def setup
     @expect_file = "./test/expect-user.sql"
 
-    @mock_conn = MockDB.new
+    @conn = MockDB.new
 
     BulkseedMysql.init(
-      db_connection: @mock_conn,
+      db_connection: @conn,
       db_execute_command: :execute,
     )
-    @seed = BulkseedMysql.new @mock_conn
+    @seed = BulkseedMysql.new @conn
   end
 
   def test_with_prepare
@@ -46,7 +46,7 @@ class BulkseedMysqlTest < Test::Unit::TestCase
     seed.call
 
     expect = File.read(@expect_file).chomp
-    actual = @mock_conn.queries[0].chomp
+    actual = @conn.queries[0].chomp
 
     assert_equal expect, actual
   end
@@ -62,7 +62,7 @@ class BulkseedMysqlTest < Test::Unit::TestCase
     end
 
     expect = File.read(@expect_file).chomp
-    actual = @mock_conn.queries[0].chomp
+    actual = @conn.queries[0].chomp
 
     assert_equal expect, actual
   end
