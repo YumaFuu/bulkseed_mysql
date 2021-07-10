@@ -6,7 +6,6 @@ If call without primary key, mysql will do DELETE and INSERT<br>
 <br>
 Be Carefull!!
 
-
 ## Installation
 
 ```ruby
@@ -92,8 +91,6 @@ seed.call
 ```
 
 ```ruby
-require "bulkseed_mysql"
-
 # You can call without prepare
 BulkseedMysql.call "users" do |s|
   s.data = [
