@@ -1,5 +1,12 @@
 # BulkseedMysql
 
+Bulkinsert or update using [REPLACE Statement](https://dev.mysql.com/doc/refman/5.6/en/replace.html) for mysql
+
+If call without primary key, mysql will do DELETE and INSERT<br>
+<br>
+Be Carefull!!
+
+
 ## Installation
 
 ```ruby
@@ -15,11 +22,6 @@ $ gem install bulkseed_mysql
 ```
 
 ## Usage
-
-Use REPLACE Statement. [see](https://dev.mysql.com/doc/refman/5.6/en/replace.html)<br>
-If call without primary key, mysql will do DELETE and INSERT<br>
-<br>
-Be Carefull!!
 
 ```ruby
 require "bulkseed_mysql"
