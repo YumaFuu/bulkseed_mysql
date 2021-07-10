@@ -16,6 +16,7 @@ class BulkseedMysqlTest < Test::Unit::TestCase
 
     BulkseedMysql.init(
       db_connection: @mock_conn,
+      db_execute_command: :execute,
     )
     @seed = BulkseedMysql.new @mock_conn
   end

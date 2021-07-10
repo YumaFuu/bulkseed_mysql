@@ -65,9 +65,11 @@ class BulkseedMysql
       username: db_user,
       password: db_password,
       database: db_name,
-    )
+    ),
+    db_execute_command: :query
   )
     @@db_connection = db_connection
+    @@db_cmd = db_execute_command
   end
 
   def self.call(name = nil, conn = nil, &block)
@@ -90,7 +92,7 @@ class BulkseedMysql
 
   def call
     @seeds.each do |s|
-      @conn.query s.to_cmd
+      @conn.send @@db_cmd, s.to_cmd
 
       puts " -- #{s.table}  :  created "\
         "#{ s.values.count } rows"

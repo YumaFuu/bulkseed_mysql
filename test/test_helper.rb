@@ -20,7 +20,7 @@ class MockDB
     @queries = []
   end
 
-  def query q
+  def execute q
     @queries << q
   end
 end

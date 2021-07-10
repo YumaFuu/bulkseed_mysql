@@ -7,7 +7,7 @@ gem "mysql2"
 gem "bulkseed_mysql"
 ```
 
-Or
+or
 
 ```bash
 # gem install mysql2
@@ -32,10 +32,17 @@ BulkseedMysql.init(
   db_name: "database",
 )
 
-or
+# or
+
+class SomeDatabaseConnection
+  def execute(sql)
+    # ...
+  end
+end
 
 BulkseedMysql.init(
   db_connection: SomeDatabaseConnection.new,
+  db_execute_command: :execute,
 )
 ```
 
