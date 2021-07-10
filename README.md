@@ -10,7 +10,7 @@ Be Carefull!!
 ## Installation
 
 ```ruby
-gem "mysql2"
+# gem "mysql2"
 gem "bulkseed_mysql"
 ```
 
@@ -37,20 +37,19 @@ BulkseedMysql.init(
 # or
 
 class SomeDatabaseConnection
-  def execute(sql)
+  def query(sql)
     # ...
   end
 end
 
 BulkseedMysql.init(
   db_connection: SomeDatabaseConnection.new,
-  db_execute_command: :execute,
 )
 ```
 
 ```ruby
 
-now = Time.now.to_s.split(" ").take(2).join(" ")
+now = Time.now.to_s.split(" ").take(2) * " "
 # => "2021-07-09 22:14:59"
 
 seed = BulkseedMysql.new
