@@ -9,8 +9,10 @@ class BulkseedMysqlTest < Test::Unit::TestCase
     end
   end
 
+  USER_SQL = "./test/expect-user.sql"
+  ADMIN_SQL = "./test/expect-admin.sql"
+
   def setup
-    @expect_file = "./test/expect-user.sql"
 
     @conn = MockDB.new
 
@@ -43,10 +45,36 @@ class BulkseedMysqlTest < Test::Unit::TestCase
       ]
     end
 
+    seed.prepare do |s|
+      s.table = "admins"
+      s.data = [
+        {
+          id: 1,
+          name: "name1",
+          email: "admin1@sample.com",
+        },
+        {
+          id: 2,
+          name: "name2",
+          email: "admin2@sample.com",
+        },
+        {
+          id: 3,
+          name: "name3",
+          email: "admin3@sample.com",
+        },
+      ]
+    end
+
     seed.call
 
-    expect = File.read(@expect_file).chomp
-    actual = @conn.queries[0].chomp
+    expect = File.read(USER_SQL).gsub(/[\r\n]/, "")
+    actual = @conn.queries[0].gsub(/[\r\n]/, "")
+
+    assert_equal expect, actual
+
+    expect = File.read(ADMIN_SQL).gsub(/[\r\n]/, "")
+    actual = @conn.queries[1].gsub(/[\r\n]/, "")
 
     assert_equal expect, actual
   end
@@ -61,8 +89,8 @@ class BulkseedMysqlTest < Test::Unit::TestCase
       ]
     end
 
-    expect = File.read(@expect_file).chomp
-    actual = @conn.queries[0].chomp
+    expect = File.read(USER_SQL).gsub(/[\r\n]/, "")
+    actual = @conn.queries[0].gsub(/[\r\n]/, "")
 
     assert_equal expect, actual
   end

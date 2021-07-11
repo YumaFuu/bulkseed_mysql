@@ -50,7 +50,8 @@ class BulkseedMysql
       <<~SQL
         REPLACE INTO #{@table}
         (#{ @columns.map{ |a| %(`#{a}`) } * ',' })
-        VALUES #{ values * "," }
+        VALUES
+        #{ values * "," }
       SQL
     end
   end
