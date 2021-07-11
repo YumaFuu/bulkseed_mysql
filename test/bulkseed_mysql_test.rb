@@ -13,14 +13,12 @@ class BulkseedMysqlTest < Test::Unit::TestCase
   ADMIN_SQL = "./test/expect-admin.sql"
 
   def setup
-
     @conn = MockDB.new
 
     BulkseedMysql.init(
       db_connection: @conn,
       db_execute_command: :execute,
     )
-    @seed = BulkseedMysql.new @conn
   end
 
   def test_with_prepare
